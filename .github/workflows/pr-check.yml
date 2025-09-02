@@ -24,11 +24,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Clean and compile
-      run: mvn clean compile -DskipTests=true
-
     - name: Run tests with JaCoCo
-      run: mvn clean test jacoco:report -Dspring.profiles.active=ci -Dmaven.test.failure.ignore=false
+      run: mvn clean test jacoco:report -Dspring.profiles.active=ci -Dmaven.test.failure.ignore=false -DskipTests=false
       env:
         SPRING_PROFILES_ACTIVE: ci
 
