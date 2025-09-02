@@ -24,5 +24,10 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: Clean and compile
+      run: mvn clean compile -DskipTests=true
+
     - name: Run tests
-      run: mvn test -DskipTests=true
+      run: mvn test -Dspring.profiles.active=ci -Dmaven.test.failure.ignore=false
+      env:
+        SPRING_PROFILES_ACTIVE: ci
