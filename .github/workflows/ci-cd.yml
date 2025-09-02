@@ -5,6 +5,7 @@ on:
     branches: [ master, develop ]
   pull_request:
     branches: [ master, develop ]
+    types: [opened, synchronize, reopened]
 
 env:
   MAVEN_OPTS: "-Xmx1024m"
@@ -26,8 +27,31 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Run tests
-      run: mvn test -DskipTests=true
+    - name: Run tests with JaCoCo
+      run: mvn clean test jacoco:report -Dspring.profiles.active=ci -Dmaven.test.failure.ignore=false
+      env:
+        SPRING_PROFILES_ACTIVE: ci
+        MAVEN_OPTS: "-Xmx1024m"
+
+    - name: Test Results Summary
+      if: always()
+      run: |
+        echo "=== RESUMO DOS TESTES (CI/CD) ==="
+        if [ -d "target/surefire-reports" ]; then
+          echo "📊 Relatórios de teste encontrados:"
+          ls -la target/surefire-reports/
+          echo ""
+          echo "📋 Testes executados:"
+          find target/surefire-reports -name "*.txt" -exec echo "Arquivo: {}" \; -exec head -5 {} \;
+        fi
+        echo ""
+        echo "=== RELATÓRIO JACOCO ==="
+        if [ -d "target/site/jacoco" ]; then
+          echo "📈 Relatório de cobertura gerado:"
+          ls -la target/site/jacoco/
+        else
+          echo "❌ Relatório JaCoCo não encontrado"
+        fi
 
   build:
     name: Build
@@ -46,6 +70,6 @@ jobs:
         cache: maven
 
     - name: Build application
-      run: mvn clean package -DskipTests
+      run: mvn clean package -DskipTests=true
 
 

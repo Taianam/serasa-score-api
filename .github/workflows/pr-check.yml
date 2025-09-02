@@ -3,6 +3,7 @@ name: Pull Request Check
 on:
   pull_request:
     branches: [ master, develop ]
+    types: [opened, synchronize, reopened]
 
 env:
   MAVEN_OPTS: "-Xmx1024m"
@@ -25,23 +26,15 @@ jobs:
         cache: maven
 
     - name: Run tests with JaCoCo
-      run: mvn clean test jacoco:report -Dspring.profiles.active=ci -Dmaven.test.failure.ignore=false -DskipTests=false
+      run: mvn clean test jacoco:report -Dspring.profiles.active=ci -Dmaven.test.failure.ignore=false
       env:
         SPRING_PROFILES_ACTIVE: ci
-
-    - name: Upload JaCoCo reports
-      uses: codecov/codecov-action@v3
-      if: always()
-      with:
-        file: ./target/site/jacoco/jacoco.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
+        MAVEN_OPTS: "-Xmx1024m"
 
     - name: Test Results Summary
       if: always()
       run: |
-        echo "=== RESUMO DOS TESTES ==="
+        echo "=== RESUMO DOS TESTES (PR CHECK) ==="
         if [ -d "target/surefire-reports" ]; then
           echo "📊 Relatórios de teste encontrados:"
           ls -la target/surefire-reports/
