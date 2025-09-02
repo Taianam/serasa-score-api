@@ -38,6 +38,9 @@ class ScoreControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        // Limpar dados existentes antes de cada teste
+        pessoaRepository.deleteAll();
+        
         pessoa = new Pessoa();
         pessoa.setNome("João Silva");
         pessoa.setIdade(30);

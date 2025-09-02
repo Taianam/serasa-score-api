@@ -48,6 +48,9 @@ class AuthControllerIntegrationTest {
 
 	@BeforeEach
 	void setUp() {
+		// Limpar dados existentes antes de cada teste
+		userRepository.deleteAll();
+		
 		User admin = new User();
 		admin.setUsername("admin");
 		admin.setPassword(passwordEncoder.encode("123456"));
