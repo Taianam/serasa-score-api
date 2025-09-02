@@ -1,0 +1,597 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-01-09T16:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v8.4.5",
+  "resources": [
+    {
+      "_id": "req_login_admin",
+      "parentId": "fld_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/login",
+      "name": "Login Root (Admin)",
+      "description": "Realiza login como usuário root/administrador",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"admin\",\n  \"password\": \"123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704816000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_login_user",
+      "parentId": "fld_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/login",
+      "name": "Login User (Exemplo)",
+      "description": "Exemplo de login como usuário comum (deve ser criado primeiro pelo root)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"user\",\n  \"password\": \"123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704815000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_criar_usuario",
+      "parentId": "fld_usuarios",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/pessoas",
+      "name": "Criar Pessoa",
+      "description": "Cria uma nova pessoa (requer ADMIN)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Teste Silva\",\n  \"idade\": 28,\n  \"cep\": \"01310100\",\n  \"telefone\": \"11987654321\",\n  \"score\": 750\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704814000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_listar_usuarios",
+      "parentId": "fld_usuarios",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/pessoas",
+      "name": "Listar Pessoas",
+      "description": "Lista todas as pessoas (requer autenticação)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.user_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704813000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_listar_usuarios_paginado",
+      "parentId": "fld_usuarios",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/pessoas/paginado",
+      "name": "Listar Pessoas Paginado",
+      "description": "Lista pessoas com paginação e filtros",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "page",
+          "value": "0"
+        },
+        {
+          "name": "size",
+          "value": "10"
+        },
+        {
+          "name": "nome",
+          "value": ""
+        },
+        {
+          "name": "idade",
+          "value": ""
+        },
+        {
+          "name": "cep",
+          "value": ""
+        }
+      ],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.user_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704812000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_buscar_usuario_por_id",
+      "parentId": "fld_usuarios",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/pessoas/1",
+      "name": "Buscar Pessoa por ID",
+      "description": "Busca pessoa específica por ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.user_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704811000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_atualizar_usuario",
+      "parentId": "fld_usuarios",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/pessoas/1",
+      "name": "Atualizar Pessoa",
+      "description": "Atualiza dados de uma pessoa (requer ADMIN)",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Administrador Atualizado\",\n  \"idade\": 31,\n  \"cep\": \"01310100\",\n  \"telefone\": \"11999999999\",\n  \"score\": 900\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704810000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_deletar_usuario",
+      "parentId": "fld_usuarios",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/pessoas/2",
+      "name": "Deletar Pessoa",
+      "description": "Deleta logicamente uma pessoa (requer ADMIN)",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704809000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_registrar_score",
+      "parentId": "fld_scores",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/scores/pessoas/1",
+      "name": "Registrar Score",
+      "description": "Registra um novo score para uma pessoa (requer ADMIN)",
+      "method": "POST",
+      "body": {},
+      "parameters": [
+        {
+          "name": "score",
+          "value": "820"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704808000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_criar_user_auth",
+      "parentId": "fld_users_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/users",
+      "name": "Criar Usuário Auth",
+      "description": "Cria um novo usuário de autenticação (requer ADMIN)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"novo_user\",\n  \"password\": \"123456\",\n  \"role\": \"USER\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704805000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_listar_users_auth",
+      "parentId": "fld_users_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/users",
+      "name": "Listar Usuários Auth",
+      "description": "Lista todos os usuários de autenticação (requer ADMIN)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704804000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_buscar_user_auth_por_id",
+      "parentId": "fld_users_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/users/1",
+      "name": "Buscar Usuário Auth por ID",
+      "description": "Busca usuário de autenticação específico por ID (requer ADMIN)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704803000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_atualizar_user_auth",
+      "parentId": "fld_users_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/users/1",
+      "name": "Atualizar Usuário Auth",
+      "description": "Atualiza dados de um usuário de autenticação (requer ADMIN)",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"user_atualizado\",\n  \"password\": \"nova_senha123\",\n  \"role\": \"USER\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704802000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_deletar_user_auth",
+      "parentId": "fld_users_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/users/2",
+      "name": "Deletar Usuário Auth",
+      "description": "Deleta logicamente um usuário de autenticação (requer ADMIN)",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704801000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_ativar_user_auth",
+      "parentId": "fld_users_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/users/1/ativar",
+      "name": "Ativar Usuário Auth",
+      "description": "Ativa um usuário de autenticação (requer ADMIN)",
+      "method": "PUT",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704800000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_desativar_user_auth",
+      "parentId": "fld_users_auth",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "url": "{{ _.base_url }}/api/users/1/desativar",
+      "name": "Desativar Usuário Auth",
+      "description": "Desativa um usuário de autenticação (requer ADMIN)",
+      "method": "PUT",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.admin_token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1704799000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_serasa_api",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "name": "🔐 Autenticação",
+      "description": "Endpoints de autenticação",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1704816000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_usuarios",
+      "parentId": "wrk_serasa_api",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "name": "👥 Pessoas",
+      "description": "CRUD de pessoas",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1704815000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_scores",
+      "parentId": "wrk_serasa_api",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "name": "📊 Scores",
+      "description": "Gestão de scores",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1704814000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_users_auth",
+      "parentId": "wrk_serasa_api",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "name": "👤 Usuários Auth",
+      "description": "Gestão de usuários de autenticação",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1704813000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_serasa_api",
+      "parentId": null,
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "name": "Serasa Score API",
+      "description": "API REST para cadastro de pessoas com score e endereço",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_serasa_api",
+      "modified": 1704816000000,
+      "created": 1704816000000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "admin_token": "",
+        "user_token": ""
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "admin_token",
+          "user_token"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1704816000000,
+      "_type": "environment"
+    }
+  ]
+}

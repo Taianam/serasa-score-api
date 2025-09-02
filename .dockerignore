@@ -1,0 +1,87 @@
+# Arquivos e diretórios a serem ignorados no build Docker
+
+# Diretórios de build e cache
+target/
+.mvn/
+node_modules/
+dist/
+build/
+
+# Arquivos de IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.temp
+
+# Arquivos de versionamento
+.git/
+.gitignore
+.gitattributes
+
+# Arquivos de documentação (não necessários no container)
+README.md
+QUICKSTART.md
+ARQUITETURA_EXPLICACAO.txt
+TESTES_EXPLICACAO.txt
+*.md
+
+# Arquivos Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Arquivos de ambiente local
+.env
+.env.local
+.env.development
+.env.production
+
+# Logs
+logs/
+*.log
+
+# Arquivos de teste
+src/test/
+**/*Test.java
+**/*Tests.java
+
+# Arquivos de configuração local
+application-local.properties
+application-dev.properties
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+
+# Arquivos temporários do Maven
+dependency-reduced-pom.xml
+release.properties
+pom.xml.releaseBackup
+
+# Arquivos de cobertura de teste
+jacoco.exec
+target/site/
+
+# Arquivos do sistema operacional
+*.pid
+*.seed
+*.pid.lock
+
+# Certificados e chaves (por segurança)
+*.pem
+*.key
+*.crt
+*.p12
+*.jks

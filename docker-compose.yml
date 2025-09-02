@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  # Aplicação Serasa Score API
+  serasa-score-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: serasa-score-api
+    ports:
+      - "8080:8080"
+    environment:
+      # Configurações da aplicação
+      - SPRING_PROFILES_ACTIVE=docker
+      - JWT_SECRET=docker-jwt-secret-super-seguro-para-desenvolvimento
+      - JWT_EXPIRATION=86400000
+      
+      # Configurações do banco (se usar PostgreSQL em produção)
+      # - DB_URL=jdbc:postgresql://postgres:5432/serasadb
+      # - DB_USERNAME=serasa_user
+      # - DB_PASSWORD=serasa_pass
+      
+      # Configurações de logging
+      - LOGGING_LEVEL_COM_SERASA_SCORESAPI=INFO
+      
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    
+    # Reiniciar automaticamente em caso de falha
+    restart: unless-stopped
+    
+    # Dependências (descomente se usar PostgreSQL)
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    
+    # Volumes para logs (opcional)
+    volumes:
+      - ./logs:/app/logs
+    
+    # Rede personalizada
+    networks:
+      - serasa-network
+
+  # PostgreSQL (descomente para usar em produção)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: serasa-postgres
+  #   environment:
+  #     - POSTGRES_DB=serasadb
+  #     - POSTGRES_USER=serasa_user
+  #     - POSTGRES_PASSWORD=serasa_pass
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U serasa_user -d serasadb"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   restart: unless-stopped
+  #   networks:
+  #     - serasa-network
+
+  # Redis para cache (opcional)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: serasa-redis
+  #   ports:
+  #     - "6379:6379"
+  #   command: redis-server --requirepass redis_password
+  #   volumes:
+  #     - redis_data:/data
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+  #     interval: 10s
+  #     timeout: 3s
+  #     retries: 5
+  #   restart: unless-stopped
+  #   networks:
+  #     - serasa-network
+
+  # Nginx como proxy reverso (opcional)
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: serasa-nginx
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #     - ./ssl:/etc/nginx/ssl
+  #   depends_on:
+  #     - serasa-score-api
+  #   restart: unless-stopped
+  #   networks:
+  #     - serasa-network
+
+# Volumes persistentes
+volumes:
+  # postgres_data:
+  #   driver: local
+  # redis_data:
+  #   driver: local
+  logs:
+    driver: local
+
+# Rede personalizada
+networks:
+  serasa-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
