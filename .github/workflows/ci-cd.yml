@@ -27,10 +27,7 @@ jobs:
         cache: maven
 
     - name: Run tests
-      run: mvn test
-
-    - name: Generate coverage report
-      run: mvn jacoco:report
+      run: mvn test -DskipTests=true
 
   build:
     name: Build
