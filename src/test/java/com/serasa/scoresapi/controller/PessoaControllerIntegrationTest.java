@@ -23,12 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serasa.scoresapi.dto.request.PessoaRequest;
+import com.serasa.scoresapi.config.ViaCepTestConfiguration;
+import com.serasa.scoresapi.domain.client.EnderecoResponse;
+import com.serasa.scoresapi.domain.client.ViaCepClient;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
+@Import(ViaCepTestConfiguration.class)
 class PessoaControllerIntegrationTest {
 
     @Autowired
@@ -37,11 +45,27 @@ class PessoaControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private ViaCepClient viaCepClient;
+
     private PessoaRequest pessoaRequest;
 
     @BeforeEach
     void setUp() {
         pessoaRequest = criarPessoaRequestPadrao();
+        configurarMockViaCep();
+    }
+
+    private void configurarMockViaCep() {
+        EnderecoResponse enderecoResponse = new EnderecoResponse();
+        enderecoResponse.setCep("01310100");
+        enderecoResponse.setLogradouro("Avenida Paulista");
+        enderecoResponse.setBairro("Bela Vista");
+        enderecoResponse.setLocalidade("São Paulo");
+        enderecoResponse.setUf("SP");
+        
+        when(viaCepClient.buscarCep(org.mockito.ArgumentMatchers.anyString()))
+            .thenReturn(enderecoResponse);
     }
 
     private PessoaRequest criarPessoaRequestPadrao() {

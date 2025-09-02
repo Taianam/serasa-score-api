@@ -19,12 +19,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.serasa.scoresapi.domain.Pessoa;
 import com.serasa.scoresapi.domain.Score;
 import com.serasa.scoresapi.repository.PessoaRepository;
+import com.serasa.scoresapi.config.ViaCepTestConfiguration;
+import com.serasa.scoresapi.domain.client.EnderecoResponse;
+import com.serasa.scoresapi.domain.client.ViaCepClient;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
+@Import(ViaCepTestConfiguration.class)
 class ScoreControllerIntegrationTest {
 
     @Autowired
@@ -33,13 +41,19 @@ class ScoreControllerIntegrationTest {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    @MockBean
+    private ViaCepClient viaCepClient;
+
     private Pessoa pessoa;
     private Score score;
 
-    @BeforeEach
+        @BeforeEach
     void setUp() {
         // Limpar dados existentes antes de cada teste
         pessoaRepository.deleteAll();
+        
+        // Configurar mock do ViaCep
+        configurarMockViaCep();
         
         pessoa = new Pessoa();
         pessoa.setNome("João Silva");
@@ -60,6 +74,18 @@ class ScoreControllerIntegrationTest {
         score.setScore(750);
         score.setDataRegistro(LocalDateTime.now());
         score.setDescricao("Recomendável");
+    }
+
+    private void configurarMockViaCep() {
+        EnderecoResponse enderecoResponse = new EnderecoResponse();
+        enderecoResponse.setCep("01310100");
+        enderecoResponse.setLogradouro("Avenida Paulista");
+        enderecoResponse.setBairro("Bela Vista");
+        enderecoResponse.setLocalidade("São Paulo");
+        enderecoResponse.setUf("SP");
+        
+        when(viaCepClient.buscarCep(org.mockito.ArgumentMatchers.anyString()))
+            .thenReturn(enderecoResponse);
     }
 
     @Test

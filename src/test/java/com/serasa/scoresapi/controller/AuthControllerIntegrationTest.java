@@ -17,17 +17,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serasa.scoresapi.domain.Role;
 import com.serasa.scoresapi.domain.User;
 import com.serasa.scoresapi.repository.UserRepository;
+import com.serasa.scoresapi.config.ViaCepTestConfiguration;
+import com.serasa.scoresapi.domain.client.EnderecoResponse;
+import com.serasa.scoresapi.domain.client.ViaCepClient;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional(rollbackFor = Exception.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles("test")
+@Import(ViaCepTestConfiguration.class)
 @TestPropertySource(properties = {
     "spring.sql.init.mode=never",
     "spring.jpa.defer-datasource-initialization=false"
@@ -36,6 +46,9 @@ class AuthControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private ViaCepClient viaCepClient;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -51,6 +64,9 @@ class AuthControllerIntegrationTest {
 		// Limpar dados existentes antes de cada teste
 		userRepository.deleteAll();
 		
+		// Configurar mock do ViaCep
+		configurarMockViaCep();
+		
 		User admin = new User();
 		admin.setUsername("admin");
 		admin.setPassword(passwordEncoder.encode("123456"));
@@ -64,6 +80,18 @@ class AuthControllerIntegrationTest {
 		user.setRole(Role.USER);
 		user.setAtivo(true);
 		userRepository.save(user);
+	}
+
+	private void configurarMockViaCep() {
+		EnderecoResponse enderecoResponse = new EnderecoResponse();
+		enderecoResponse.setCep("01310100");
+		enderecoResponse.setLogradouro("Avenida Paulista");
+		enderecoResponse.setBairro("Bela Vista");
+		enderecoResponse.setLocalidade("São Paulo");
+		enderecoResponse.setUf("SP");
+		
+		when(viaCepClient.buscarCep(org.mockito.ArgumentMatchers.anyString()))
+			.thenReturn(enderecoResponse);
 	}
 
 	@Test
