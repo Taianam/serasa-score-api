@@ -56,7 +56,7 @@ Use o **Swagger UI** ou **Insomnia** para testar a API:
 O projeto possui CI/CD configurado com GitHub Actions:
 
 - **Testes automáticos** em push e pull requests
-- **Build da aplicação** após testes
+9- **Build da aplicação** após testes
 - **Java 21** configurado
 
 
