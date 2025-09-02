@@ -56,11 +56,7 @@ Use o **Swagger UI** ou **Insomnia** para testar a API:
 O projeto possui CI/CD configurado com GitHub Actions:
 
 - **Testes automáticos** em push e pull requests
-- **Build e push da imagem Docker** para a branch `main`
+- **Build da aplicação** após testes
 - **Java 21** configurado
-
-### Configurar secrets no GitHub:
-- `DOCKER_USERNAME` - Seu usuário Docker Hub
-- `DOCKER_PASSWORD` - Sua senha Docker Hub
 
 
